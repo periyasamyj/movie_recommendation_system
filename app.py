@@ -5,8 +5,8 @@ import pandas as pd
 
 app = Flask(__name__)
 
-movies=pickle.load(open('model/movies_list.pkl','rb'))
-similarity=pickle.load(open('model/similarity.pkl','rb'))
+movies=pickle.load(open('movies_list.pkl','rb'))
+similarity=pickle.load(open('similarity.pkl','rb'))
 
 def fetchPoster(movie_id):
      
