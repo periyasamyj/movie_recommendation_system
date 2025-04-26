@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movie Recommendation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  </head>
+  <body>
+    <header class="bg-black text-white body-font -my-8">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0" href="recommend">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-blue-500 rounded-full" viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">Movie Recommendation</span>
+          </a>
+          <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+            <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+              <a class="mr-5 hover:text-blue-900" href="/">Home</a>
+              <a class="mr-5 hover:text-blue-900" href="about">About Us</a>
+              <a class="mr-5 hover:text-blue-900" href="contact">Contact Us</a>
+              <a class="mr-5 hover:text-blue-900" href="recommend">Recommendation</a>
+            </nav>
+        </div>
+      </header>
+      <hr class="border-white" />
+      <section class="bg-black text-white body-font">
+       <br>
+       <div class="autocomplete-container" ></div>
+       <form action="/recommend" method="post">
+        <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+          <div class="relative flex-grow w-full">
+            <input
+              type="text"
+              id="searchBox"
+              placeholder="Enter The Movie Name"
+              name="movie_name"
+              class="w-full bg-black bg-opacity-50 rounded border border-gray-300 focus:border-blue-500 focus:bg-transparent focus:ring-2 focus:ring-blue-200 text-base outline-none text-white py-1 px-3 pr-10 leading-8 transition-colors duration-200 ease-in-out"
+            />
+            <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white">
+              <i class='bx bx-search-alt bx-md' ></i>
+            </button>
+      
+            <div id="autocompleteList" class="autocomplete-items border-2 rounded-md shadow-md absolute w-full bg-black z-10"></div>
+          </div>
+        </div>
+      </form>
+      
+        </div>
+          </div>
+        </div>
+      </section>
+      <section class=" bg-black text-white body-font h-100 ">
+        {% if status==True %}
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap w-full mb-20">
+            <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+              <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-white"> Top Recommend Movies </h1>
+           
+              
+              <div class="h-1 w-20 bg-indigo-500 rounded"></div>
+
+              {% if not movie_data%}
+              {% set error=1 %}
+              <p class="lg:w-1/2 w-full leading-relaxed text-white text-xl mt-5">'..' Movie Not Found</p>
+              {% endif %}
+
+
+            </div>
+          <div class="flex flex-wrap -m-4">
+            {% if not error %}
+            {% for recommend_movies_name,recommend_movies_poster,recommend_movies_tmdb_id,recommend_movies_imdb_id in movie_data %}
+            <div class=" transform transition duration-100 hover:scale-110 xl:w-1/4 md:w-1/2 p-4">
+              
+              <div class=" bg-zinc-900 p-6 rounded-lg">
+                <img class="transform transition duration-300 hover:scale-110 h-45 rounded w-full object-cover object-center mb-6" src="{{recommend_movies_poster}}" alt="content">
+                <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Movie Name</h3>
+        
+                <h2 class="text-lg text-zinc-400 font-medium title-font mb-4 mt-2">{{recommend_movies_name}}</h2>
+                <h3 class="text-lg text-white font-medium title-font mb-4 mt-2">Watch</h3>
+                <a href="https://www.themoviedb.org/movie/{{recommend_movies_tmdb_id}}" target="_blank"> <button class="bg-indigo-950 hover:bg-indigo-800 text-white font-semibold py-2 pl-10 pr-10  rounded ">Tmdb</button></a>
+                <a href="https://www.imdb.com/title/{{recommend_movies_imdb_id}}/?ref_=nv_sr_srsg_0_tt_1_nm_0_in_0_q_tt084822" target="_blank"> <button class="bg-indigo-950 hover:bg-indigo-800 text-white font-semibold py-2 pl-10 pr-10  rounded ">IMbd</button></a>
+              </div>
+              
+              
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+
+            {% if status== False %}
+
+            <div class="container px-5 py-24 mx-auto">
+              <div class="flex flex-wrap w-full mb-20">
+                <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+                  <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-white mt- ">Popular Movies :</h1>
+                  <div class="h-1 w-20 bg-indigo-500 rounded"></div>
+                </div>
+              <div class="flex flex-wrap -m-4">
+                
+                {% for recommend_movies_name,recommend_movies_poster,recommend_movies_tmdb_id, recommend_movies_imdb_id in popular_movies %}
+                <div class=" transform transition duration-100 hover:scale-110 xl:w-1/4 md:w-1/2 p-4">
+                  
+                  <div class=" bg-zinc-900 p-6 rounded-lg">
+                    <img class="transform transition duration-300 hover:scale-110 h-45 rounded w-full object-cover object-center mb-6" src="{{recommend_movies_poster}}" alt="content">
+                    <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Movie Name</h3>
+            
+                    <h2 class="text-lg text-zinc-400 font-medium title-font mb-4 mt-2">{{recommend_movies_name}}</h2>
+                    <h3 class="text-lg text-white font-medium title-font mb-4 mt-2">Watch</h3>
+                    <a href="https://www.themoviedb.org/movie/{{recommend_movies_tmdb_id}}" target="_blank"> <button class="bg-indigo-950 hover:bg-indigo-800 text-white font-semibold py-2 pl-10 pr-10  rounded ">Tmdb</button></a>
+                    <a href="https://www.imdb.com/title/{{recommend_movies_imdb_id}}/?ref_=nv_sr_srsg_0_tt_1_nm_0_in_0_q_tt084822" target="_blank"> <button class="bg-indigo-950 hover:bg-indigo-800 text-white font-semibold py-2 pl-10 pr-10  rounded ">IMbd</button></a>
+                  </div>
+                  
+                </div>
+                {% endfor %}
+                {% endif %}
+            
+            
+        </div>
+      </section> 
+      <hr class="border-white" />
+      <footer class="bg-black text-white body-font">
+        <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+          <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-blue-500 rounded-full" viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">Movies.</span>
+          </a>
+          <p class="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">© 2025 TamilMovies —
+            <a href="" class="text-gray-600 ml-1" rel="noopener noreferrer" target="_blank">@Periyasamy</a>
+          </p>
+          <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+            <a class="text-white">
+              <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+              </svg>
+            </a>
+            <a class="ml-3 text-white">
+              <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+              </svg>
+            </a>
+            <a class="ml-3 text-white">
+              <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
+              </svg>
+            </a>
+            <a class="ml-3 text-white">
+              <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">
+                <path stroke="none" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
+                <circle cx="4" cy="4" r="2" stroke="none"></circle>
+              </svg>
+            </a>
+          </span>
+        </div>
+      </footer>
+
+    
+    <script>
+     let movies = {{movie_list|tojson}};
+     var suggestions=movies;  
+    
+      const searchBox = document.getElementById('searchBox');
+      const listContainer = document.getElementById('autocompleteList');
+    
+      searchBox.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        listContainer.innerHTML = '';
+    
+        if (!query) return;
+    
+        const filtered = suggestions.filter(item => item.toLowerCase().startsWith(query));
+        
+        filtered.forEach(item => {
+          const div = document.createElement('div');
+          div.classList.add('autocomplete-item','p-2');
+          div.textContent = item;
+          div.addEventListener('click', function() {
+            searchBox.value = item;
+            listContainer.innerHTML = '';
+          });
+          listContainer.appendChild(div);
+        });
+      });
+    
+      document.addEventListener('click', function(e) {
+        if (e.target !== searchBox) {
+          listContainer.innerHTML = '';
+        }
+      });
+    </script>
+  </body>
+</html>
